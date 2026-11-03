@@ -1,40 +1,105 @@
+const http = require('http');
+const app = http.createServer((req, res) => {
+  res.write(req.url);
+  res.end();
+  console.log("Serever received request");
+
+});
+
+app.listen(8080, () => {
+  console.log('Server running at http://localhost:8080');
+});
+
+
+
+
+
+
+
+
+
+
+function add(a: number, b: number): number {
+    return a + b;
+}
+console.log("Add:", add(10, 20));
+
+function greet(name: string): string {
+    return `Hello, ${name}!`;
+}
+console.log(greet("Aditya"));
+
+function checkStatus(isActive: boolean): void {
+    if (isActive) {
+        console.log("Status: Active");
+    } else {
+        console.log("Status: Inactive");
+    }
+}
+checkStatus(true);
+
+function multiply(a: number, b?: number): number {
+    return b ? a * b : a * 1;
+}
+console.log("Multiply:", multiply(5));
+console.log("Multiply:", multiply(5, 4));
+
+function power(base: number, exponent: number = 2): number {
+    return base ** exponent;
+}
+console.log("Power:", power(3));
+console.log("Power:", power(3, 4));
+
+
+
+
+
+
+
+
+
 const express = require('express');
 const mongoose = require('mongoose');
-
 const app = express();
 app.use(express.json());
-
 mongoose.connect('mongodb://127.0.0.1:27017/mydb')
-.then(()=>console.log("mongoDB connected"))
-.catch((err)=>console.log(err));
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
 
 const UserSchema = new mongoose.Schema({
-  name:String,
-  email:String
+    name: String,
+    email: String
 });
-const User = mongoose.model('user',UserSchema);
 
-app.post('/users',async(req,res)=>{
-  const user = new User(req.body);
-  await user.save();
-  res.send(user);
-})
-app.get('/users',async(req,res)=>{
-  const users = await User.find();
-  res.send(users)
-})
-app.put('/users/:id',async(req,res)=>{
-  const user = await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
-  res.send(user);
-})
-app.delete('/users/:id',async(req,res)=>{
-  const user = await User.findByIdAndDelete(req.params.id);
-  res.send(user);
-})
-app.listen((8080),()=>{
-  console.log("server is running on port 8080");
-  console.log(`localhost:8080`);
-})
+const User = mongoose.model('User', UserSchema);
+
+app.post('/users', async (req, res) => {
+    const user = new User(req.body);
+    await user.save();
+    res.send(user);
+});
+
+app.get('/users', async (req, res) => {
+    const users = await User.find();
+    res.send(users);
+});
+
+app.put('/users/:id', async (req, res) => {
+    const user = await User.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+    );
+    res.send(user);
+});
+app.delete('/users/:id', async (req, res) => {
+    await User.findByIdAndDelete(req.params.id);
+    res.send({ message: 'User deleted' });
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
 
 
 
@@ -43,28 +108,38 @@ app.listen((8080),()=>{
 
 
 
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
-
-function App() {
-  const students = ["deney","anusha","sravanthi"];
-
-  return (
-    <div>
-      
-      <h1>Students list</h1>
-      <ul>
-        {students.map((student)=>(
-          <li key={student}>{student}</li>
-        ))}
-      </ul>
-    </div>
-  )
+function Home() {
+    return <h2>Home Page</h2>;
 }
 
-export default App
+function About() {
+    return <h2>About Page</h2>;
+}
+
+function Contact() {
+    return <h2>Contact Page</h2>;
+}
+
+function App() {
+    return (
+        <BrowserRouter>
+            <h1>My Website</h1>
+
+            <nav>
+                <Link to="/">Home</Link> |{" "}
+                <Link to="/about">About</Link> |{" "}
+                <Link to="/contact">Contact</Link>
+            </nav>
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+export default App;
