@@ -1,0 +1,128 @@
+const http = require('http');
+const app =  http.createServer((req,res)=>{
+    res.write('hello world');
+    res.end();
+    console.log('server received request');
+});
+app.listen(8080,()=>{
+    console.log('server is running at http://localhost:8080');
+});
+
+
+
+
+
+
+
+
+
+
+class Person{
+  public name:string;
+  private age:number;
+  protected gender:string;
+  constructor(name:string,age:number,gender:string){
+    this.name=name;
+    this.age=age;
+    this.gender=gender;
+  }
+  public greet():void{
+    console.log(`hello ${this.name}`);
+  }
+  private getAge():void{
+    console.log(`iam ${this.age} years old`);
+  }
+  protected getGender():void{
+    console.log(`iam ${this.gender}`);
+  }
+  public getDetails():void{
+    this.getAge();
+    this.getGender();
+  }
+}
+class Student extends Person{
+  public studentId:number;
+  constructor(name:string,age:number,gender:string,studentId:number){
+    super(name,age,gender);
+    this.studentId=studentId;
+  }
+  public studentInfo():void{
+    console.log(`student id : ${this.studentId}`);
+    this.getGender();
+  }
+}
+
+const person1=new Person("John",25,"Male");
+person1.greet();
+person1.getDetails();
+const student1=new Student("Alice",20,"Female",12345);
+student1.greet();
+student1.studentInfo();
+
+
+
+
+
+
+
+
+const express = require('express');
+const app = express();
+
+app.get('/',(req,res)=>{
+    res.send("welcome to express.js");
+})
+app.get('/home',(req,res)=>{
+    res.send("this is home page");
+})
+app.get('/about',(req,res)=>{
+    res.send("this is about page");
+})
+app.get('/contact',(req,res)=>{
+    res.send("this is contact page");
+})
+
+app.get('/user/:id',(req,res)=>{
+    const id = req.params.id;
+    res.send(`search route -> user id : ${id}`);
+})
+app.get('/user/:subject/:year',(req,res)=>{
+    const subject = req.params.subject;
+    const year = req.params.year;
+    res.send(`search route->subject:${subject} year:${year}`);
+})
+
+app.get('/search',(req,res)=>{
+    const student = req.query.student;
+    const year = req.query.year;
+    res.send(`search route->student:${student} year:${year}`);
+})
+app.listen(3000,()=>{
+    console.log("server is running on http://localhost:3000");
+});
+
+
+
+
+
+import { useState } from 'react'
+import heroImg from './assets/hero.png'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import './App.css'
+
+function App() {
+  const students = ['deney','prudhvi','kalyan'];
+
+  return (
+    <div>
+      <ul>
+        {students.map((student,index)=>(
+          <li key={student}>{student}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export default App
